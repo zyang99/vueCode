@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <h3 id='h3'>{{msg}}</h3>
+    <input type="button" value="修改" @click="msg = 'no'">
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        msg: "ok"
+      },
+      methods: {
+        show() {
+          console.log('执行了show方法');
+        }
+      },
+
+      // Vue生命周期钩子函数
+
+      // 创建期间的钩子函数
+      beforeCreate() {  // 第一个生命周期函数，表示实例完全被创建出来之前，会执行它
+        // console.log(this.msg);
+        // this.show();  
+        // 注意：在beforeCreate生命周期函数执行的时候，methods和data中数据还没有被初始化                
+      },
+
+      created() {  // 第二个生命周期函数
+        // console.log(this.msg);
+        // this.show();
+        // 在created中 data 和 methods都已经被初始化好了
+        // 如果要调用methods中方法或者data中数据,最早只能在这里进行操作.
+      },
+
+      beforeMount() { //第三个钩子函数,模板已经在内存中编辑完成,但是尚未渲染到页面中去
+        // console.log(document.querySelector('#h3').innerText);  // {{msg}}
+        // 页面中元素,还没有真正替换过来,只是之前写的一些模板字符串.还没有被挂载过来
+      },
+
+      mounted() { //第四个钩子函数,表示模板已经挂载到了页面之中.
+        // console.log(document.querySelector('#h3').innerText); // ok
+        // 页面中的模板字符串已经被替换好了.
+        // 注意:mounted是实例创建期间的最后一个钩子函数.当执行完该函数,就表示实例已经被创建好了.如果没有其他操作,就已知待在内存中不动
+      },
+
+      // 运行期间的钩子函数
+      beforeUpdate() { // 这时候界面还没有更新,但是数据被更新了
+        // console.log('界面上:'+document.querySelector('#h3').innerText);
+        // console.log('data中内容:'+this.msg);
+        // 执行时,界面显示的数据还是旧的,但是data中数据是更新的. 页面尚未和最新的数据保持同步
+      },
+
+      updated() {  // 这时候界面也进行了更新
+        // console.log('界面上:'+document.querySelector('#h3').innerText);
+        // console.log('data中内容:'+this.msg);
+        // 这时,页面和data保持了同步更新了
+      },
+
+      // 销毁阶段
+      beforeDestroy() {
+
+      },
+      destroyed() {
+
+      }
+
+    })
+
+  </script>
+</body>
+
+</html>

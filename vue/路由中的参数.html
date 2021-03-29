@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+  <script src="../scripts/vue-router.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/login?id=10&name=zyang">登录</router-link>
+    <router-link to="/register/12/lisi">注册</router-link>
+    <router-view>
+    </router-view>
+  </div>
+
+  <script>
+    let login = {
+      // 通过query传参
+      template: '<h1>登录组件----{{ $route.query.id}}---{{$route.query.name}}</h1>',
+      created() {
+        console.log(this.$route.query.id)
+      }
+    }
+    let register = {
+      // 通过params传参
+      template: '<h1>注册组件---{{ this.$route.params.id}}--{{this.$route.params.name}}</h1>',
+    }
+
+    let routerConfig = [
+      { path: '/login', component: login },
+      { path: '/register/:id/:name', component: register }
+    ]
+
+    let routerObj = new VueRouter({
+      routes: routerConfig,
+    })
+
+    let vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router: routerObj,
+    })
+  </script>
+</body>
+
+</html>

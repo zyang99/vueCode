@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <input type="text" v-model="n1">
+    <select v-model="option">
+      <option value="+">+</option>
+      <option value="-">-</option>
+      <option value="*">*</option>
+      <option value="/">/</option>
+    </select>
+    <input type="text" v-model="n2">
+    <button type="text">=</button>
+    <input type="text" :value="calclu">
+    <!-- 使用计算属性computed -->
+    <!-- <input type="button" value="=" @click="calc">
+    <input type="text" v-model="result"> -->
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: "#app",
+      data: {
+        n1: 0,
+        n2: 0,
+        result: 0,
+        option: '+'
+      },
+      methods: {
+        calc: function () {
+          // 简易都是整数
+          switch (this.option) {
+            case '+':
+              this.result = parseInt(this.n1) + parseInt(this.n2);
+              break;
+            case '-':
+              this.result = parseInt(this.n1) - parseInt(this.n2);
+              break;
+            case '*':
+              this.result = parseInt(this.n1) * parseInt(this.n2);
+              break;
+            case '/':
+              this.result = parseInt(this.n1) / parseInt(this.n2);
+              break;
+          }
+
+          // 取巧方法   建议不要使用  XSS攻击
+          // let codeStr = 'parseInt(this.n1)'+ this.option +'parseInt(this.n2)';
+          // this.result = eval(codeStr);
+        }
+      },
+      computed: {
+        // 计算会有问题出现： 3.14 + 2 = 5.1400000000001    
+        calclu: function () {
+          // 简易
+          switch (this.option) {
+            case '+':
+              this.result = Number(this.n1) + Number(this.n2);
+              break;
+            case '-':
+              this.result = Number(this.n1) - Number(this.n2);
+              break;
+            case '*':
+              this.result = Number(this.n1) * Number(this.n2);
+              break;
+            case '/':
+              this.result = Number(this.n1) / Number(this.n2);
+              break;
+          }
+          return Number(this.result);
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

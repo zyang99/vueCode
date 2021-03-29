@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <!-- 父组件可以在引用子组件的时候通过属性绑定的形式（v-bind）.
+      把需要传递给子组件的数据传递到子组件内部供使用 -->
+    <!-- <com1 :parentmsg="msg" :parentfunction="show"></com1> -->
+    <!-- 父组件向子组件传递方法  使用v-on来传递 -->
+    <com1 :parentmsg="msg" @parentfun="show"></com1>
+  </div>
+
+  <template id="temp1">
+    <div>
+      <h2>这是子组件--{{parentmsg}}</h2>
+      <input type="button" value="点击触发父组件事件" @click="myfun">
+    </div>
+  </template>
+
+  <script>
+    let vm = new Vue({
+      el: "#app",
+      data: {
+        msg: '父组件数据',
+        dataFromSon: null
+      },
+      methods: {
+        show(data1) {
+          console.log('父组件方法:----', data1);
+          this.dataFromSon = data1
+        }
+      },
+      components: {
+        // 注意： 子组件中，默认无法访问父组件的data上的数据和methods方法
+        com1: {
+          // data 中的数据是子组件私有的数据 ----可读可写
+          // 比如，子组件通过ajax请求回来的数据都可以放到data身上
+          data: function () {
+            return {
+              book: {
+                title: '这是子组件的数据',
+                pages: 30
+              }
+
+            }
+          },
+          // props：组件中的所有 paops 中的数据，都是通过父组件传递给子组件的
+          // props中数据----------只读（不要去修改，其实是可以修改的，但是有警告）
+          // 从父组件传递过来的值需要在paops数组中定义一下，这样才能使用这个数据
+          props: ['parentmsg', 'parentfunction'],   //方法这样也能用。但是最好用v-on来绑定方法事件
+          template: "#temp1",
+          methods: {
+            myfun() {
+              this.$emit('parentfun', this.book)  // 可以以此将子组件的data传递给父组件
+            }
+          },
+          directives: {},
+          filters: {},
+          components: {}
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

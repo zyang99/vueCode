@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+  <style>
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    .v-enter-active,
+    .v-leave-active{
+      transition:all 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <mycom1> </mycom1>
+   
+  </div>
+
+  <div id="app2">
+    <login></login>
+    <!-- 切换两个 -->
+    <a href="" @click.prevent="flag=true">登录</a>
+    <a href="" @click.prevent="flag=false">注册</a>
+    <log v-if="flag"></log>
+    <reg v-else="flag"></reg>
+    <!-- 切换多个 -->
+    <a href="" @click.prevent="comName='log'">登录</a>
+    <a href="" @click.prevent="comName='reg'">注册</a>
+    <a href="" @click.prevent="comName='ts'">销毁</a>
+    <!-- 使用transition包裹实现组件模板切换动画过渡 -->
+    <!-- out-in 是解决就组件消失和新组件出现同步的问题.这样就是等组件消失完才慢慢出现 -->
+    <transition  mode="out-in">  
+      <component :is="comName"></component>
+    </transition>
+
+  </div>
+
+  <template id="temp1">
+    <div>
+      <h3>这是在被控制的appdiv之外使用template标签创建的一个组件模板结构</h3>
+      <h3>好用,不错,有提示</h3>
+      <h3>{{msg}}</h3>
+    </div>
+  </template>
+
+  <template id="temp2">
+    <div>
+      <h3>这是私有组件模块结构</h3>
+      
+    </div>
+  </template>
+
+  <script>
+    // // 1.1 使用Vue.extend 来创建全局的Vue组件
+    // let com1 = Vue.extend({
+    //   template: '<h3>组件模板1</h3>'
+    // })
+    // // 1.2 使用Vue.component('组件名',组件模板对象)
+    // // 组件名使用短横线分割命名或者驼峰法命名.但是引用的时候只有短横线分隔命名有效
+    // // 注意在html中标签只有小写 所以最好只用小写命名即可 'mycom1'
+    // Vue.component('my-com1', com1);
+    // 简化1
+    // Vue.component('mycom1', Vue.extend({
+    //   template: '<h3>组件模板1</h3>'
+    // }))
+    // 简化2
+    // Vue.component('mycom1', {
+    //   template: '<h3>组件模板1</h3>'
+    // })
+
+    let com1 = Vue.extend({
+      template: '<h1>12344</h1>'
+    })
+    // 组件中的data是一个返回对象的方法;data中的数据和vm实例中使用一样
+    Vue.component('mycom1', {
+      template: "#temp1",
+      data: function () {
+        return {
+          msg: '这是组件mycom1中定义的数据'
+        }
+      }
+    })
+    let vm = new Vue({
+      el: '#app',
+      data: {
+
+      }
+    })
+
+
+    let vm2 = new Vue({
+      el: '#app2',
+      data: {
+        flag: true,
+        comName: 'log'
+      },
+      methods: {}, //方法
+      filters: {},  //过滤器
+      directives: {}, //自定义指令
+      components: {   //私有组件
+        login: {
+          template: '#temp2'
+        },
+        log: {
+          template: '<h1>登录</h1>'
+        },
+        reg: {
+          template: '<h1>注册</h1>'
+        },
+        ts: {
+          template: '<h1>销毁</h1>'
+        }
+      },
+      beforeCreate() { }, //钩子函数
+    })
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<!--最初用来链接html编写规则，如今多用来保证文档的正常读写-->
+<html>
+<!--包含整个页面的内容，称为根元素-->
+
+<head>
+  <!--该元素的内容对用户不可见，包括搜索引擎关键词、页面描述、css样式表和字符编码声明等-->
+  <meta charset='UTF-8'>
+  <!--该元素指定文档使用utf-8字符编码-->
+  <title>vuetest.html</title>
+  <!--设置页面的标题，显示在浏览器标签页上，也作为收藏页面的描述-->
+
+   <!-- axios:Promise based HTTP client for the browser and node.js -->
+   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+   <script src="../scripts/vue.js"></script>
+   <!-- 放在前面也不太会出现插值闪烁问题 -->
+</head>
+
+<body>
+  <!--该元素包含期望让用户在访问页面时看到的内容。文本、图像、视频、游戏、可播放的音轨等内容-->
+  <div id="app">
+    <p>{{message}},{{name}}。现在是北京时间：{{time}}</p>
+    <p>{{more}}</p>
+    <!-- 指令 @ == v-on:监听事件 循环数组：v-for -->
+    <!-- addEventListener -->
+    <button @click="onClick">点击</button>
+
+    <ul>
+      <h1>索引方式</h1>
+      <li>{{colors[0]}}</li>
+      <li>{{colors[1]}}</li>
+      <li>{{colors[2]}}</li>
+    </ul>
+
+    <ul>
+      <h1>v-for方式</h1>
+      <button @click='onAdd'>点击添加</button>
+      <li v-for="(item,index) in colors" :key="index">{{ item }}</li>
+    </ul>
+    <button @click="onRequest">发送请求</button>
+    <ul>
+      <li v-for="item of list" :key="item.title">{{ item.title }}</li>
+    </ul>
+  </div>
+
+
+ 
+
+  <!-- <script>//测试axios发送请求
+    axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5').then((result) => {
+      console.log('result', result.data);
+    })
+  </script> -->
+
+  <script type="text/javascript" charset="utf-8">
+    let foo = 'nihaoma';
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        message: 'hi',
+        name: 'zyang',
+        time: new Date().toLocaleString(),
+        colors: ['red', 'blue', 'yellow'],
+        list: [{ title: 'vue+html' }],
+        more: foo
+      },
+      methods: {
+        onClick: function () {
+          console.log('点击了按钮', this); //vue内部做了代理的，其实是this.$data.message
+          this.message = 'hello';
+        },
+        onAdd: function () {
+          this.colors.push('black');
+        },
+        onRequest: function () {
+          axios.get('https://jsonplaceholder.typicode.com/todos?_limit=5').then((result) => {
+            // console.log('result', result.data)
+            for (item of result.data) { //这里如果是in 那么item就是0 1 2 3 4 .。。。。。
+              this.list.push(item);
+              // console.log(item);
+            }
+            // 注意： 这些操作应该放在数据库里面，浏览器刷新是会消息的
+            // console.log('list:', this.list);
+            //console.log('this', this)
+          })
+        }
+
+      }
+    })
+
+
+
+    // new Vue({
+    //   el: '#app2',
+    //   data: {
+    //     age: 24
+    //   }
+    // })
+
+  </script>
+
+</body>
+
+</html>

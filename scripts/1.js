@@ -1,0 +1,1 @@
+console.log('1.js放在head头中');

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="/scripts/vue.js"></script>
+  <style>
+    .ball {
+      width: 50px;
+      height: 50px;
+      background-color: rgb(4, 22, 15);
+      border-radius: 50%;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <input type="button" value="点击掉落" @click="flag=!flag">
+    <transition mode="out-in" @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter"
+     >
+      <div class="ball" v-show="flag"></div>
+    </transition>
+
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false
+      },
+      methods: {
+        beforeEnter(el) {
+          // 开始时候透明度为1
+          el.style.opacity = 1;
+          el.style.transform = 'translate(0,0)';
+        },
+        enter(el, done) {
+          el.offsetWidth;
+          el.style.transform = 'translate(150px,350px)';
+          el.style.transition = 'all 0.8s ease';
+          done();
+        },
+        afterEnter(el) {
+          
+          // 1、控制小球的显示与隐藏
+          // 2、直接跳过后半场，让flag标识符直接变为false。
+          // 3、下次点击，false又变为true了
+          this.flag = !this.flag
+          // 来个透明度变化.需要设置开始时透明度为1。不然下次透明度还是0就看不见
+          el.style.opacity = 0;
+          
+          // Vue中把一个完整动画使用钩子函数拆分成了两部分 入场 和离场。
+          // 使用flag标识  表示动画的切换；
+          // flag： 入场false -> true   离场 true -> false          
+        }
+      }
+    })
+  </script>
+</body>
+
+</html>

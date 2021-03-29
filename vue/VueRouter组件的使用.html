@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+  <script src="../scripts/vue-router.js"></script>
+  <!-- 0 安装Vuerouter -->
+  <style>
+    /* 精准匹配，使用这个不会像下面一样激活根路径 */
+    .router-link-exact-active,  
+    .myactive,
+    /* 激活匹配，也就是所有路由都会激活'/'根路径 */
+    .router-link-active{
+      /* 通过设置这个类(选中路由的标签上会带有这两个类)  来让选中的路由进行高亮 */
+      color: saddlebrown;
+      font-size: 40px;
+    }
+
+    .v-enter,
+    .v-leave-to{
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    .v-enter-active,
+    .v-leave-active{
+      transition: all 0.5s ease;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <!--路由匹配  -->
+    <!-- to 属性来指定连接。 该标签<router-link>会默认渲染称为<a>标签 tag改变默认渲染 -->
+    <router-link to="/login" tag='span'>登录</router-link>
+    <router-link to="/register">注册</router-link>
+
+    <!-- 路由出口：路由匹配到的组件将渲染到这里 -->
+    <transition name="" mode="out-in">
+      <router-view></router-view>
+    </transition>
+    
+
+
+  </div>
+
+  <template id="temp1">
+    <div>
+      <h1>登录</h1>
+    </div>
+  </template>
+
+
+  <template id="temp2">
+    <div>
+      <h1>注册</h1>
+    </div>
+  </template>
+
+  <script>
+
+    // 1 组件模板对象。还没有注册
+    let temp1 = {
+      template: '#temp1',
+    };
+    let temp2 = {
+      template: '#temp2',
+    };
+
+    // 2、创建一个路由对象。当导入vue-router后，在window全局上有一个路由构造函数：VueRouter
+    // 在new 路由对象的时候，可以为构造函数传递一个配置对象（路由配置规则）
+
+    let routerConfigObj = [  // 路由匹配规则
+      // 每个路由规则都是一个对象。有两个必须的属性：
+      // 属性1：path 表示监听哪个路由连接地址； 属性2： component： 表示路由匹配到path后，展示该属性的哪个对应组件模板
+      // component的属性值，必须是模板对象。 而不是组件的引用名称
+      // { path: '/login', component: temp1 },
+      { path: '/', redirect: '/login'}, //和node的redirect不是一回事  这个是通过修改hash值重定向
+      { path: '/login', component: temp1 },
+      { path: '/register', component: temp2 }
+    ]
+    let routerObj = new VueRouter({
+      routes: routerConfigObj,   //  注意：是routes  不是routers
+      linkActiveClass: 'myactive',   // 修改激活匹配的类名
+      linkExactActiveClass:'myexact' // 修改精准匹配路由的激活类
+    })
+
+    let vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      components: {},
+      // 将路由规则注册到VUe实例上。用来监听URL地址的变化，然后展示不同的组件
+      router: routerObj
+    })
+
+  </script>
+</body>
+
+</html>

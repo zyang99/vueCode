@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+
+</head>
+
+<body>
+  <div id="app">
+    
+    <cmt-box @func="loadComments"></cmt-box>
+
+    <ul>
+      <li v-for="item of list" :key="item.id">
+        评论人：{{item.user}}_____________{{item.content}}
+      </li>
+    </ul>
+
+  </div>
+
+  <template id="temp1">
+    <div>
+      评论人：<input type="text" v-model="user">
+      内容：<input type="text" v-model="content" @keyup.enter="postCmt">
+      <input type="button" value="发表" @click="postCmt">
+    </div>
+  </template>
+
+  <script>
+    // 组件模板块
+    var commentBox = {
+      template: "#temp1",
+      data: function () {
+        return {
+          user: '',
+          content: ''
+        }
+      },
+      methods: {
+        postCmt: function () {
+          let comment = { id: Date.now(), user: this.user, content: this.content };
+
+          // 从glocalStorage中获取所有的评论,把发表的评论放进去
+          let list = JSON.parse(localStorage.getItem('ctm') || '[]');
+          list.unshift(comment);    // push放在末尾，unshift放在首位这样保证新的在前面
+
+          // 保存新的评论数据
+          localStorage.setItem('ctm', JSON.stringify(list));
+
+          // 调用父组件的加载list方法
+          this.$emit('func');
+
+          // 将评论框置空
+          this.user = this.content = '';
+          
+          
+        }
+      }
+    }
+
+    // Vue实例
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        list: [
+          { id: Date.now(), user: '李白', content: '天生我材必有用' },
+          { id: Date.now(), user: '杜甫', content: '泥马勒戈壁' },
+          { id: Date.now(), user: '马化腾', content: '欢迎来到王者峡谷' },
+          { id: Date.now(), user: '苏轼', content: '茅屋为秋风送破格' },
+          { id: Date.now(), user: '李清照', content: '我是女的' }
+        ]
+      },
+      // 在钩子函数中调用这个函数
+      created () {
+        this.loadComments();
+      },
+      methods: {
+        loadComments: function () {
+          let list = JSON.parse(localStorage.getItem('ctm') || []);
+          this.list = list;
+        }
+      },
+      components: {
+        'cmt-box': commentBox,
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>

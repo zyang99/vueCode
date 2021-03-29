@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+
+  <style>
+    /* 进入前离开后透明度都是0 */
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+
+    /* 进入后,离开前透明度都是1 这个可以不用写*/
+    .v-enter-to,
+    .v-leave {
+      opacity: 1;
+    }
+
+    /* 入场和离场的时间段 */
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.6s ease;
+    }
+
+
+
+    .my-enter,
+    .my-leave-to {
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .my-enter-active,
+    .my-leave-active {
+      transition: all 0.6s ease;
+    }
+  </style>
+</head>
+
+
+<body>
+  <div id="app">
+    <input type="button" value="点击" @click="flag=!flag">
+    <transition>
+      <h2 v-show="flag">标题1</h2>
+    </transition>
+
+    <hr>
+    <input type="button" value="点击" @click="flag2=!flag2">
+    <!-- 自定义前缀 -->
+    <transition name="my"> 
+      <h2 v-show='flag2'>标题2</h2>
+    </transition>
+
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        flag: false,
+        flag2: false
+      }
+    })
+  </script>
+</body>
+
+</html>

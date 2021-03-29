@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--最初用来链接html编写规则，如今多用来保证文档的正常读写-->
+<html>
+<!--包含整个页面的内容，称为根元素-->
+
+<head>
+  <!--该元素的内容对用户不可见，包括搜索引擎关键词、页面描述、css样式表和字符编码声明等-->
+  <meta charset='UTF-8'>
+  <!--该元素指定文档使用utf-8字符编码-->
+  <title>显示标签页面</title>
+  <!--设置页面的标题，显示在浏览器标签页上，也作为收藏页面的描述-->
+</head>
+
+<body>
+  <div id="app" :class="{active:isactive , gree:isgreen}">
+    <!-- <p>{{foo}}</p> -->
+    <h1 v-if="awesome">Vue is awesome!</h1>
+    <h1 v-else>Oh no 😢</h1>
+    <template v-if="ok">
+      <h1>Title</h1>
+      <p>Paragraph 1</p>
+      <p>Paragraph 2</p>
+    </template>
+    <h1 v-show="ok">Hello!</h1>
+    <ul>
+      <li v-for="item,index in items" :key="index">
+        {{index}}--{{item.title}}
+      </li>
+    </ul>
+    <ul>
+      <li v-for="obj,name in newobj">
+        {{name}}：{{obj}}
+      </li>
+    </ul>
+
+    <input type="button" @click="show" value="点击">
+
+  </div>
+
+  <script src="../scripts/vue.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    let data = {
+      foo: 'hello'
+    };
+    let x = 'hi';
+    let vm = new Vue({
+      el: "#app",
+      data: {
+        isactive: true,
+        isgreen: true,
+        awesome: -1,
+        ok: null,
+        items: [
+          { title: 'biaoti' },
+          { title: 24 },
+          { title: 'nihao' },
+          { title: 'nihaoma' },
+          { title: 'zyang' }
+        ],
+        newobj: {
+          title: 'nihao',
+          age: 44,
+          name: 'hi'
+        }
+      },
+      methods: {
+        show:function(){
+          console.log('show',this);  //指向Vue实例
+        },
+        show2:()=>{
+          console.log('show2',this);   //指向window
+        }
+      },
+      created () {
+        let va = () => {
+          console.log('va',this)
+        }
+        va()
+        this.show()
+        this.show2()       
+      }
+    });
+
+    // $用来区分开用户自定义的property。
+    // watch是观察，当foo值改变执行回调函数。传回新值和旧值
+    vm.$watch('foo', (newData, old) => {
+      console.log(newData, old);
+    })
+    vm.foo = 'hi'
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <script src="../scripts/vue.js"></script>
+  <style>
+    input {
+      height: 30px;
+      font-size: 20px;
+    }
+
+    li {
+      border: dashed 1px purple;
+      margin: 10px;
+      padding: 10px;
+      font-size: 20px;
+      width: 100%;
+    }
+
+    li:hover {
+      background-color: salmon;
+      transition: all 1s ease;
+    }
+
+    .v-enter,
+    .v-leave-to {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+
+    .v-enter-active,
+    .v-leave-active {
+      transition: all 0.8s ease;
+    }
+
+    .v-move {
+      transition: all 0.8s ease;
+    }
+
+    .v-leave-active {
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="app">
+    id:<input type="text" v-model="id">
+    name:<input type="text" v-model="name">
+    <input type="button" value="添加" @click="add">
+
+    <!-- 1第一步使用transition-group包裹使用v-for循环渲染的列表 -->
+    <!-- 2实现自定义进场动画.v-for循环的 必须设置:key属性 -->
+    <!-- 添加appear实现入场时候效果 -->
+    <!-- tag指定要渲染的元素.不指定 默认为span -->
+    <transition-group appear tag='ul'>
+      <li v-for="item,i in list" :key="item.id" @click="del(i)">
+        {{item.id}}-------{{item.name}}
+      </li>
+    </transition-group>
+
+
+
+  </div>
+
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        id: '',
+        name: '',
+        list: [
+          { id: 1, name: '赵高' },
+          { id: 2, name: '严嵩' },
+          { id: 3, name: '魏忠贤' },
+          { id: 4, name: '秦桧' }
+        ]
+      },
+      methods: {
+        add() {
+          this.list.push({ id: this.id, name: this.name });
+          this.id = this.name = '';
+        },
+        del(i) {
+          this.list.splice(i, 1);
+        }
+      }
+
+    })
+  </script>
+</body>
+
+</html>
