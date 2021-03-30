@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+  <script src="../scripts/vue-router.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <router-link to="/account">account</router-link>
+    <router-view></router-view>
+  </div>
+
+  <template id='account'>
+    <div>
+      <h2>这是Account</h2>
+      <router-link to="/account/login">login</router-link>
+      <router-link to="/account/register">register</router-link>
+      <router-view></router-view>
+    </div>
+  </template>
+
+  <script>
+    let account = {
+      template: '#account'
+    }
+    let login = {
+      template: '<h3>登录</h3>'
+    }
+    let register = {
+      template: '<h3>注册</h3>'
+    }
+
+    // 实现子路由的嵌套
+    // 子路由前不带'/'.否则就是以根路径开始解析。
+    let routerConfig = [
+      {
+        path: '/account',
+        component: account,
+        children: [
+          { path: 'login', component: login },
+          { path: 'register', component: register }
+        ]
+      }
+    ]
+    let router = new VueRouter({
+      routes: routerConfig
+    })
+    let vm = new Vue({
+      el: '#app',
+      data: {},
+      methods: {},
+      router: router,
+    })
+  </script>
+</body>
+
+</html>

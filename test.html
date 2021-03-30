@@ -6,19 +6,48 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <script src="/scripts/1.js"></script>
 
-
+  <script src="../scripts/vue.js"></script>
 </head>
 
 <body>
-
-  <div>
-    <h1>标题1</h1>
+  <div id="app">
+    <!-- 0. 使用keyup事件调用mehods -->
+  <input type="text" v-model="firstName" @keyup="getFullName">+
+  <input type="text" v-model="lastName" @keyup="getFullName">=
     
+    <input type="text" v-model='fullName'>
+
+    <p>{{fullName}}</p>
+    <p>{{fullName}}</p>
+    <p>{{fullName}}</p>
+    <p>{{fullName}}</p>
   </div>
 
-  <script src="/scripts/2.js"></script>
+  <script>
+    let vm = new Vue({
+      el: '#app',
+      data: {
+        firstName: '',
+        lastName: '',
+        fullName: ''
+      },
+      methods: {
+        // 0. 使用输入框键盘监听事件调用methods实现
+        getFullName() {
+          this.fullName = this.firstName + ' ' + this.lastName
+          console.log('ok')
+        }
+      },
+      watch: {
+   
+      },
+      computed: {
+
+
+      }
+    })
+  </script>
 </body>
 
 </html>
