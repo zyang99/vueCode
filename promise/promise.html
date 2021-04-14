@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    1111111111111111111
+  </div>
+
+  <script>
+
+    // //微队列 异步队列
+    // Promise.resolve().then(() => {
+    //   console.log('promise1');
+    //   setTimeout(() => {
+    //     console.log('setTimeout2');
+    //   }, 0)
+    // })
+    // console.log("main");
+    // setTimeout(() => {
+    //   console.log('setTimeout1');
+    //   Promise.resolve().then(() => {
+    //     console.log('promise2');
+    //   })
+    // }, 0)
+    // 第一个promise进入微任务队列（事件队列），接着往下，setTimeout将回调函数放入WebApi异步队列中。
+    // 再往下，主线程中没有任务了，事件轮询事件队列。
+    // 执行一个promise的then里面的回调函数，打印promise1。接着，setTimeout将回调函数放入异步队列中。
+    // 在异步队列中，先放入的setTimeout时间到了，将内容放到事件队列供事件轮询
+    // 事件轮询，打印setTimeout1。接着promise进入微队列，微队列先于异步队列。所以接着打印promise2。
+    // 接着打印setTimeout2
+    // main
+    // promise1
+    // setTimeout1 
+    // promise2
+    // setTimeout2
+
+    // const promise = new Promise((resolve,reject)=>{
+    //   console.log("excutor1");
+    //   resolve('resolved');
+    // })
+    // console.log("main1");
+    // promise.then(value=>console.log(value))
+    // console.log("main2");
+    // console.log("main2");
+    // console.log("main2");
+    // console.log("main2");
+    // console.log("main2");
+    // // promise对象的执行器是同步回调，所以会先执行excutor1
+    // // 在主线程中执行main1
+    // // 遇到执行异步回调，放到微队列，
+    // // 接着主线程执行main2.。。。。
+    // // 执行微队列中的resolved
+
+    const p = new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+        resolve('成功1');
+      },0)
+    })
+    p.then(value=>{
+      console.log(value);
+    }).catch(reason=>{
+      console.log(reason);
+    })
+
+    const p1 = new Promise((resolve,reject)=>{
+      resolve('成功2')
+    })
+    const p2 = Promise.resolve('成功3')
+    const p3 = Promise.reject('失败1')
+
+    // 这里按照次序到微队列找寻执行
+    p1.then(value=>console.log(value))
+    p2.then(value=>console.log(value))
+    // p3.then(undefined,reason=>console.log(reason))
+    p3.catch(reason=>console.log(reason))
+// 最上面有定时器需要最后执行
+    // 主线程没有任务
+    // p进入执行器，将异步任务放入webapi里面挤时间
+    // p1启动任务，放入微队列，
+    // p2启动任务，放入微队列，
+    // p3启动任务，放入微队列，
+    // 成功2-成功3-失败1-成功1
+    
+    // 所有成功才成功，一个失败直接失败
+    const pAll = Promise.all([p1,p2,p3])
+    pAll.then(
+      value=>{
+        console.log(value);
+      },
+      reason=>{
+        console.log(reason);
+      }
+    )
+
+    const pRace = Promise.race([p1,p2,p3])
+    pRace.then(
+      value=>{
+        console.log(value);
+      },
+      reason=>{
+        console.log(reason);
+      }
+    )
+
+  </script>
+</body>
+
+</html>

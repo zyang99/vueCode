@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // setTimeout(() => {
+    //   console.log('setTimeout1');
+    //   Promise.resolve(4).then(
+    //     value => console.log('resolve1', value)
+    //   )
+    // }, 0);
+    // setTimeout(() => {
+    //   console.log('setTimeout2');
+    // }, 0);
+    // Promise.resolve(1).then(
+    //   value => console.log('resolve1', value)
+    // )
+    // Promise.resolve(2).then(
+    //   value => console.log('resolve2', value)
+    // )
+    // new Promise((resolve, reject) => {
+    //   console.log('new promise1');
+    //   resolve(3)
+    // }).then(
+    //   value => console.log('resolve3', value)
+    // )
+    // // new promise1
+    // // resolve1 1
+    // // resolve2 2
+    // // resolve3 3
+    // // setTimeout1
+    // // resolve1 4
+    // // setTimeout2
+
+    // const first = ()=>(new Promise((resolve,reject)=>{
+    //   console.log(3)
+    //   let p = new Promise((resolve,reject)=>{
+    //     console.log(7)
+    //     setTimeout(()=>{
+    //       console.log(5)
+    //       resolve(6)
+    //       // 这里面的resolve是在宏队列里面，由于会先执行外面的微队列。状态已经改变，所以这个没有用
+    //     },0)
+    //     resolve(1)  
+    //   })
+    //   resolve(2)
+    //   p.then(value=>{
+    //     console.log(value);
+    //   })
+    // }))
+    // first().then(value=>{
+    //   console.log(value)
+    // })
+    // console.log(4)
+    // // 3
+    // // 7
+    // // 4
+    // // 1
+    // // 2
+    // // 5
+
+    setTimeout(()=>{
+      console.log('0')
+    },0)
+    new Promise((resolve,reject)=>{
+      console.log('1')
+      resolve()
+    }).then(()=>{
+      console.log('2')
+      new Promise((resolve,reject)=>{
+        console.log('3')
+        resolve()
+      }).then(()=>{
+        console.log('4')
+      }).then(()=>{
+        console.log('5')
+      })
+    }).then(()=>{
+      console.log('6')
+    })
+    new Promise((resolve,reject)=>{
+      console.log('7')
+      resolve()
+    }).then(()=>{
+      console.log('8') 
+    })
+    // 1
+    // 7
+    // 2
+    // 3
+    // 8
+    // 4
+    // 6
+    // 5
+    // 0
+  </script>
+</body>
+
+</html>

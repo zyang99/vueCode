@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>解密阶段</title>
+  
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <div class="tabsNav">
+
+        <div class="clearfix"></div>
+    </div>
+    <div class="mainContent">
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-table"></i>解密阶段</div>
+            <div class="panel-body">
+                <!-- content -->
+                <div class="form-horizontal">
+                    <form action="" id="form">
+                        <div class="form-group">
+                            <label for="parkName" class="col-sm-2 control-label">密文 <span style="color:red">*</span></label>
+                            <div class="col-sm-6">
+
+                                <textarea rows="4" cols="15" type="text" class="form-control" id="miwen" name="miwen"></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parkName" class="col-sm-2 control-label">加密算法 <span style="color:red">*</span></label>
+                            <div class="col-sm-6">
+
+                                <textarea rows="4" cols="15" type="text" class="form-control" id="jiami" name="jiami" ></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parkName" class="col-sm-2 control-label">密钥 <span style="color:red">*</span></label>
+                            <div class="col-sm-6">
+
+                                <textarea rows="4" cols="15" type="text" class="form-control" id="miyao" name="miyao" ></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parkName" class="col-sm-2 control-label">明文 <span style="color:red">*</span></label>
+                            <div class="col-sm-6">
+
+                                <textarea rows="4" cols="15" type="text" class="form-control" id="mingwen" name="mingwen" readonly></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parkName" class="col-sm-2 control-label">是否存在攻击行为 <span style="color:red">*</span></label>
+                            <div class="col-sm-6">
+
+                                <textarea rows="4" cols="15" type="text" class="form-control" id="isattack" name="isattack" readonly></textarea>
+
+                            </div>
+                        </div>
+
+                        <div class="panel-footer">
+                            <div class="form-group no-margin">
+                                <div class="col-sm-offset-2 col-sm-10">
+
+                                    <button type="button" class="btn btn-info" onclick="get_encode()">获取加密数据</button>
+                                    <button type="button" class="btn btn-info" onclick="decode()">解密并分析</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- content End -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function get_encode(){
+        // console.log($('#form').val());
+        var formdata=new FormData($('#form'));//获取文件法一
+
+        $.ajax({
+            type: 'post',
+            url: '{:url("get_encode")}',
+            data: formdata,
+            cache: false,
+            processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+            contentType: false, // 不设置Content-type请求头
+            success: function (data) {
+                var code=data.code;
+                var msg=data.msg;
+                var url=data.url;
+                if (code == 1) {
+                    toastr.success(msg);
+                    setTimeout(function () {
+                        $('#miwen').val(data.miwen);
+                        $('#miyao').val(data.miyao);
+                        $('#jiami').val(data.jiami)
+                    },500)
+                }else{
+                    toastr.error("操作失败");
+                }
+            }
+        })
+
+    }
+
+    function decode(){
+        console.log($('#form'));
+        var formdata=new FormData($('#form')[0]);//获取文件法一
+
+        $.ajax({
+            type: 'post',
+            url: '{:url("jiemi")}',
+            data: formdata,
+            cache: false,
+            processData: false, // 不处理发送的数据，因为data值是Formdata对象，不需要对数据做处理
+            contentType: false, // 不设置Content-type请求头
+            success: function (data) {
+                var code=data.code;
+                var msg=data.msg;
+                var url=data.url;
+                if (code == 1) {
+                    toastr.success(msg);
+                    setTimeout(function () {
+                        $('#mingwen').val(data.mingwen)
+                    },500)
+                }else{
+                    toastr.error("操作失败");
+                }
+            }
+        })
+
+    }
+
+</script>
+</body>
+</html>
