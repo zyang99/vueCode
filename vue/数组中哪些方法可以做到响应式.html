@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+<body>
+  <div id="app">
+
+  </div>
+  <script>
+
+    let vm = new Vue({
+      el:'#app',
+      data:{
+        letters:['a','b','c','d']
+      }
+    })
+    //  响应式的方法
+    // 1 .push()方法  在数组最后添加元素
+    // 2 .pop()方法  删除数组中的最后一个元素
+    // 3 .shift()方法  删除数组中的第一个元素
+    // 4 .unshift()方法   在数组最前面添加元素
+    // 5 .splice()方法   删除元素/插入元素/替换元素
+      // splice(start,delete)   删除元素：第二个参数表示要删除几个（不传，就删除后面所有的元素）
+      // splice(start,delete,'1','2'...)替换元素：第二个表示要替换几个元素，后面就是用于替换前面的元素
+      // splice(start,0,'1',...) 插入元素：第二个参数传入0，后面跟上要插入的元素
+    // 6 .sort()方法   排序方法。：  当时数组进行排序需要传入回调函数： .sort(a,b=>a>b)
+    // 7 .reverse()方法   反转，顺序反转
+
+    // 不是响应式的
+    // this.letters[0] = 'laaaa';
+
+    // 在Vue中
+    // set(要修改的对象，索引值，修改后的值)
+    // Vue.set(this.letters,0,'laaaa')
+  </script>
+</body>
+</html>

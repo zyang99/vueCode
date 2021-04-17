@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+
+  数组中的一些高阶函数用法
+  <script>
+    const nums = [12, 20, 300, 94, 399, 100, 40, 50]
+    // 需求：1、取出所有小于100的数 2、将这些数全部转化为2倍 3、然后把转化后的所有数加起来
+    // filter/map/reduce
+
+    // filter 遍历数组，并且经过操作，返回过滤后的原数组
+    // filter中的回调函数：必须返回一个boolean值
+    // true：函数内部会自动将这次回调的n加入到新的数组中去
+    // false：函数内部会过滤掉这次的n
+    let newNums = nums.filter(n => {
+      return n < 100
+    })
+    console.log(newNums);  // [12, 20, 94, 40, 50]
+
+    // map 将数组中每一个元素进行某种操作。然后返回这个新的数组
+    let newNums2 = newNums.map(n => {
+      return n * 2
+    })
+    console.log(newNums2);  // [24, 40, 188, 80, 100]
+
+    // reduce 作用对数组中所有的内容进行汇总 
+    // 参数1：回调函数。  参数2： 初始值,默认为0
+    // preValue: 上一次的返回值   每一次遍历值
+    let total = newNums2.reduce((preValue, n) => {
+      return preValue + n
+    }, 0)
+    // 第一次： preValue：0  n：24
+    // 第二次： preValue：0+20  n：40
+    // 第三次： preValue：0+20+40  n：188
+    // 第四次： preValue：0+20+40+188  n：80
+    // 第四次： preValue：0+20+40+188+80  n：100   这里就return 0+20+40+188+80+100
+    console.log(total);   // 432
+
+    // 高阶使用
+    let Total = nums.filter(n => n < 100)
+    .map(n => n * 2)
+    .reduce((pre, n) => pre + n, 0)
+    console.log(Total);   // 432
+  </script>
+</body>
+
+</html>
