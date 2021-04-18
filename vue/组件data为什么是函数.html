@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <cpn></cpn>
+    <cpn></cpn>
+    <cpn></cpn>
+  </div>
+
+  <template id='cpn'>
+    <div>
+      <h1>当前计数：{{counter}}</h1>
+      <button @click="decrement" :disabled="counter<1">-</button>
+      <button @click="increment">+</button>
+    </div>
+  </template>
+
+  <!-- <script type="text/x-template" id="cpn2">
+    <div>
+      <h1>这是组件内容1</h1>
+    </div>
+  </script> -->
+
+  <script>
+    // 在外部定义数据对象。
+    // const obj = {
+    //   counter:0
+    // }
+    Vue.component('cpn', {
+      template: '#cpn',
+      data() {   //  防止相同组件的多个实例共用数据对象
+        return {
+          counter: 0
+        }
+        // 这里就会相互影响
+        // return obj    
+      },
+      methods: {
+        decrement() {
+          this.counter--
+        },
+        increment() {
+          this.counter++
+        }
+      }
+    })
+
+    const vm = new Vue({
+      el: '#app',
+      data: {
+      }
+    })
+  </script>
+</body>
+
+</html>
