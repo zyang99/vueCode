@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../scripts/vue.js"></script>
+</head>
+
+<!-- 需求：1、将父组件的值num1、num2传递给子组件
+2、在子组件中将接收到的值进行双向绑定
+3、双向绑定后，改变的时候需要改变到父组件的值
+4、子组件中num1的值改变，num2也改变并且是num1的100倍（同时，num2改变，num1永远是100分之1） -->
+
+<body>
+  <div id="app">
+    <h1>父组件中的num1---{{num1}}</h1>
+    <cpn :snum1="num1" :snum2="num2" @num1change="num1change" @num2change="num2change"></cpn>
+    <h1>父组件中的num2---{{num2}}</h1>
+  </div>
+  <template id="cpn">
+    <div>
+      <h2>props(从父组件接受到的)---{{snum1}}</h2>
+      <h1>data(子组件中的)---{{sonnum1}}</h1>
+      <input type="text" v-model.number="sonnum1" @input="sonnum1input">
+      <br>
+      <input type="text" v-model.number="sonnum2" @input="sonnum2input">
+      <h1>data(子组件中的)---{{sonnum2}}</h1>
+      <h2>props(从父组件接受到的)---{{snum2}}</h2>
+    </div>
+  </template>
+  <script>
+    const cpn = {
+      template: '#cpn',
+      data() {
+        return {
+          sonnum1: this.snum1,
+          sonnum2: this.snum2
+        }
+      },
+      props: {
+        snum1: Number,
+        snum2: Number
+      },
+      methods: {
+        sonnum1input() {
+          this.sonnum2 = this.sonnum1 * 100
+          this.$emit('num1change', this.sonnum1)
+          this.$emit('num2change', this.sonnum2)
+        },
+        sonnum2input() {
+          this.sonnum1 = this.sonnum2 / 100
+          this.$emit('num2change', this.sonnum2)
+          this.$emit('num1change', this.sonnum1)
+        }
+      },
+      // 除了上面的methods 通过绑定input属性，还可以通过watch监听data中属性值的改变来实现
+      // 属性名(newValue, oldValue){}
+      // watch: {
+      //   sonnum1(newValue){
+      //     this.sonnum2 = newValue *100
+      //     this.$emit('num1change',newValue)
+      //   },
+      //   sonnum2(newValue){
+      //     this.sonnum1 = newValue / 100
+      //     this.$emit('num2change',newValue)
+      //   }
+      // }
+    }
+
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        num1: 0,
+        num2: 0
+      },
+      methods: {
+        num1change(value) {
+          this.num1 = value
+        },
+        num2change(value) {
+          this.num2 = value
+        }
+      },
+      components: {
+        cpn
+      }
+    })
+  </script>
+</body>
+
+</html>
